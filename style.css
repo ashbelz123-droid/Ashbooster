@@ -1,31 +1,92 @@
-/* style.css */
+// server.js
 
-/* Apply 50% zoom to the entire page */
-html {
-  zoom: 50%;  /* Or you can use transform: scale(0.5); */
-  transform-origin: top left;
-}
+// Load environment variables
+require('dotenv').config();
 
-/* General styling for the body */
-body {
-  font-size: 1.2rem; /* Adjust font size to make it more readable at 50% zoom */
-  font-family: Arial, sans-serif; /* Ensure readable font */
-  line-height: 1.5;
-  margin: 0;
-  padding: 20px;
-}
+// Required dependencies
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path'); // To handle static files
+const app = express();
 
-/* Make sure headings and links are still readable */
-h1 {
-  font-size: 2rem;
-  color: #333;
-}
+// Middleware to parse JSON bodies
+app.use(express.json());
 
-a {
-  color: #007BFF;
-  text-decoration: none;
-}
+// Serve static files (CSS, images, JS)
+app.use(express.static(path.join(__dirname, 'public'))); // Serve from 'public' folder
 
-a:hover {
-  text-decoration: underline;
-}
+// MongoDB URI (from environment variables)
+const MONGO_URI = process.env.MONGO_URI;
+
+// Connect to MongoDB
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Successfully connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1);  // Exit the process if DB connection fails
+  });
+
+// Route to check if the server is up
+app.get('/', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <title>${process.env.SITE_NAME}</title>
+        <link rel="stylesheet" href="/style.css">  <!-- Link to static CSS -->
+      </head>
+      <body>
+        <h1>Welcome to ${process.env.SITE_NAME} 🚀</h1>
+        <p>Your SMM Panel is ready! Start managing your social media activities now.</p>
+        <a href="/smm-panel">Go to SMM Panel</a>  <!-- Link to SMM Panel -->
+      </body>
+    </html>
+  `);
+});
+
+// Route to handle the SMM Panel
+app.get('/smm-panel', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <title>${process.env.SITE_NAME} - SMM Panel</title>
+        <link rel="stylesheet" href="/style.css">  <!-- Link to static CSS -->
+      </head>
+      <body>
+        <h1>Welcome to the SMM Panel 🚀</h1>
+        <p>Manage your Social Media Marketing activities here.</p>
+        <!-- Add more SMM Panel functionalities as needed -->
+      </body>
+    </html>
+  `);
+});
+
+// Route to test the Pesapal connection (mock for now)
+app.get('/pesapal', (req, res) => {
+  const pesapalInfo = {
+    consumerKey: process.env.PESAPAL_CONSUMER_KEY,
+    consumerSecret: process.env.PESAPAL_CONSUMER_SECRET,
+    environment: process.env.PESAPAL_ENV,
+  };
+  
+  res.json(pesapalInfo);  // Return Pesapal info as a JSON response
+});
+
+// Route for Social Share API testing (mock for now)
+app.get('/socialshare', (req, res) => {
+  const socialShareInfo = {
+    apiKey: process.env.SOCIALSPHARE_API_KEY,
+    apiUrl: process.env.SOCIALSPHARE_API_URL,
+  };
+  
+  res.json(socialShareInfo);  // Return Social Share info as a JSON response
+});
+
+// Start the server on the specified port
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`${process.env.SITE_NAME} is running on port ${PORT}`);
+});
