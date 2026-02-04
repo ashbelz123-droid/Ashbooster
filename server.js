@@ -1,7 +1,6 @@
-// server.js – Enhanced Debugging for Deployment Issues
+// server.js – Full working script for AshMediaBoost
 
-require('dotenv').config();
-
+require('dotenv').config();  // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -16,7 +15,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB connection setup
 const MONGO_URI = process.env.MONGO_URI;
-
 if (!MONGO_URI) {
   console.error('❌ MONGO_URI is not set. Please provide it in the .env file.');
 } else {
@@ -27,18 +25,8 @@ if (!MONGO_URI) {
     });
 }
 
-// Health check route
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    uptime: process.uptime(),
-    timestamp: new Date(),
-  });
-});
-
-// Home route – testing static CSS loading
+// Home route – displays a welcome page with a link to the SMM Panel
 app.get('/', (req, res) => {
-  console.log('Serving homepage');
   res.send(`
     <html>
       <head>
@@ -47,13 +35,50 @@ app.get('/', (req, res) => {
       </head>
       <body>
         <h1>Welcome to AshMediaBoost 🚀</h1>
-        <p>Your server is up and running!</p>
+        <p>Your SMM Panel is ready!</p>
+        <a href="/smm-panel">Go to SMM Panel</a> <!-- Correct link to SMM Panel -->
+        <br>
+        <h2>Need support? Contact us on WhatsApp</h2>
+        <a href="https://wa.me/yourwhatsappnumber">Chat on WhatsApp</a> <!-- WhatsApp link -->
       </body>
     </html>
   `);
 });
 
-// Test route for Pesapal integration
+// SMM Panel route – the main panel for your services
+app.get('/smm-panel', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>SMM Panel</title>
+        <link rel="stylesheet" href="/css/style.css"> <!-- Static CSS link -->
+      </head>
+      <body>
+        <h1>Welcome to the SMM Panel 🚀</h1>
+        <p>Manage your Social Media Marketing activities here.</p>
+        <ul>
+          <li><a href="#">Manage Posts</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Settings</a></li>
+        </ul>
+        <br>
+        <h2>Need support? Contact us on WhatsApp</h2>
+        <a href="https://wa.me/yourwhatsappnumber">Chat on WhatsApp</a> <!-- WhatsApp link -->
+      </body>
+    </html>
+  `);
+});
+
+// Health check route – useful for monitoring
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    uptime: process.uptime(),
+    timestamp: new Date(),
+  });
+});
+
+// Test route for Pesapal integration (mock data)
 app.get('/pesapal', (req, res) => {
   res.json({
     consumerKey: process.env.PESAPAL_CONSUMER_KEY || 'Not Set',
@@ -62,7 +87,7 @@ app.get('/pesapal', (req, res) => {
   });
 });
 
-// Test route for Social Share API
+// Test route for Social Share API (mock data)
 app.get('/socialshare', (req, res) => {
   res.json({
     apiKey: process.env.SOCIALSPHARE_API_KEY || 'Not Set',
