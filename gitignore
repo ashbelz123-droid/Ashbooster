@@ -1,0 +1,20 @@
+# Ignore environment variables file
+.env
+
+# Ignore node_modules (dependencies)
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore build files
+/dist
+
+# Ignore IDE-specific files (like VS Code)
+.vscode/
+
+# Ignore package-lock.json (if you prefer not to track it)
+package-lock.json
+
+# Ignore any temporary files
+*.tmp
