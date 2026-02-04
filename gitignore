@@ -13,7 +13,7 @@ dist/
 # Ignore IDE-specific files (like VS Code)
 .vscode/
 
-# Ignore the package-lock.json (if you don't want to track it)
+# Ignore package-lock.json (if you prefer not to track it)
 package-lock.json
 
 # Ignore temporary files
