@@ -1,16 +1,28 @@
-{
-  "name": "ashmediaboost",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "mongoose": "^8.1.1"
-  },
-  "engines": {
-    "node": "14.x"
-  }
+/* style.css */
+
+/* Basic styling for the page */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+a {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #007BFF;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #0056b3;
 }
